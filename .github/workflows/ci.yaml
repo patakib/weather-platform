@@ -1,0 +1,36 @@
+name: CI - Local Bootstrap Pipeline
+
+on:
+  push:
+    branches: ["*"]
+  pull_request:
+    branches: ["*"]
+
+jobs:
+  validate-bootstrap:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Config Repo
+        uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: false
+
+      - name: Run Ansible Playbook (Dry Run)
+        # We use --syntax-check first to fail fast if YAML is broken
+        run: |
+          uv tool run --from ansible ansible-playbook \
+          local/configuration/bootstrap.yaml --syntax-check
+
+      - name: Execute Ansible Bootstrap
+        # This actually runs the playbook on the GitHub runner.
+        # It will clone your weather repo and create the data dirs.
+        run: |
+          uv tool run --from ansible ansible-playbook \
+          -i local/configuration/inventory.ini local/configuration/bootstrap.yaml
+        env:
+          # If your playbook uses environment variables for paths/keys
+          ANSIBLE_FORCE_COLOR: "true"
