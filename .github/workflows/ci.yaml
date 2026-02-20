@@ -22,7 +22,7 @@ jobs:
       - name: Run Ansible Playbook (Dry Run)
         # We use --syntax-check first to fail fast if YAML is broken
         run: |
-          uv tool run --with ansible-core ansible-playbook \
+          uv tool run --from ansible-core ansible-playbook \
           local/bootstrap.yaml --syntax-check
 
       - name: Execute Ansible Bootstrap
