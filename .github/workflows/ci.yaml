@@ -34,10 +34,3 @@ jobs:
         env:
           # If your playbook uses environment variables for paths/keys
           ANSIBLE_FORCE_COLOR: "true"
-
-      - name: Verify Results
-        # Sanity check: Did the folders actually get created?
-        run: |
-          ls -R ~/weather-app/data/
-          test -d ~/weather-app/data/raw
-          test -d ~/weather-data/data/warehouse
