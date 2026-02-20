@@ -1,0 +1,8 @@
+app_dir: "{{ ansible_user_dir }}/weather-app"
+
+data_dirs:
+  - "{{ app_dir }}/data"
+  - "{{ app_dir }}/data/raw"
+  - "{{ app_dir }}/data/warehouse"
+
+duckdb_path: "{{ app_dir }}/data/warehouse/weather_dwh.duckdb"

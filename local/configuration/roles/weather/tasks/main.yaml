@@ -1,0 +1,102 @@
+##############################
+# Install system dependencies
+##############################
+
+- name: Install system packages (ArchLinux)
+  pacman:
+    name:
+      - python
+      - python-pip
+      - git
+      - curl
+    state: present
+  when: ansible_os_family == "Archlinux"
+
+- name: Install system packages (Debian/Ubuntu)
+  apt:
+    name:
+      - python3
+      - python3-pip
+      - python3-venv
+      - git
+      - curl
+    state: present
+    update_cache: yes
+  when: ansible_os_family == "Debian"
+
+##################################################
+# Install uv (Python package manager)
+##################################################
+
+- name: Install uv
+  shell: |
+    curl -LsSf https://astral.sh/uv/install.sh | sh
+  args:
+    creates: "{{ ansible_user_dir }}/.local/bin/uv"
+  become: no
+
+##################################################
+# Clone Github repo
+##################################################
+
+- name: Checkout Weather App repository
+  ansible.builtin.git:
+    repo: "https://github.com/patakib/weather-app.git"
+    dest: "{{ ansible_user_dir }}/weather-app"
+    version: master # Target branch (or tag/commit hash)
+    force: yes # Overwrites local changes if they exist
+    clone: yes
+    update: yes
+  become: no
+
+##################################################
+# Create data directories
+##################################################
+
+- name: Create data directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ ansible_user_id }}"
+    mode: "0755"
+  loop: "{{ data_dirs }}"
+  become: no
+
+##################################################
+# Install Python dependencies (duckdb, dbt, etc)
+##################################################
+
+- name: Install Python dependencies via uv
+  shell: |
+    {{ ansible_user_dir }}/.local/bin/uv sync
+  args:
+    chdir: "{{ app_dir }}"
+  become: no
+
+##################################################
+# Create dbt profiles directory
+##################################################
+
+- name: Create dbt profiles directory
+  file:
+    path: "{{ ansible_user_dir }}/.dbt"
+    state: directory
+    mode: "0755"
+  become: no
+
+##################################################
+# Create dbt profile for DuckDB
+##################################################
+
+- name: Create dbt profile
+  copy:
+    dest: "{{ ansible_user_dir }}/.dbt/profiles.yml"
+    content: |
+      data_platform:
+        target: dev
+        outputs:
+          dev:
+            type: duckdb
+            path: "{{ duckdb_path }}"
+            threads: 4
+  become: no

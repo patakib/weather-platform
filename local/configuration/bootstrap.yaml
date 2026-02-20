@@ -1,0 +1,6 @@
+- name: Bootstrap local lakehouse weather data platform
+  hosts: local
+  become: no
+
+  roles:
+    - weather
