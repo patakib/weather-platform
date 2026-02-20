@@ -10,16 +10,23 @@ Several platforms are included:
 
 ## Architecture
 
-This project involves several important parts of a data workflow, such as:
-- getting data from API (in this case Weather Forecast API)
-- storing data in data lake (locally in parquet files)
-- transforming data as part of an ETL workflow
-- ingesting data into data warehouse
-- visualize data on dashboard
+Source repository: https://github.com/patakib/weather-app  
+That repo contains all the logic for the actual application.
 
 ### Local Bootstrap
 
 ```configuration``` folder includes all necessary files for Ansible that are needed to bootstrap a (Linux) server with the Weather Python project.
+
+```cd local```
+```ansible-playbook -i inventory.yml bootstrap.yml```
+
+It should clone the app, create the necessary folders for data and install the Python environment in ```{YOUR_HOME_FOLDER}/weather-app```.
+
+
+```
+```
+```
+```
 ```
 ```
 ```
