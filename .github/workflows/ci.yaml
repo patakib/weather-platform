@@ -29,7 +29,7 @@ jobs:
         # This actually runs the playbook on the GitHub runner.
         # It will clone your weather repo and create the data dirs.
         run: |
-          uv tool run --with ansible-core ansible-playbook \
+          uv tool run --from ansible-core ansible-playbook \
           -i local/inventory.ini local/bootstrap.yaml
         env:
           # If your playbook uses environment variables for paths/keys
