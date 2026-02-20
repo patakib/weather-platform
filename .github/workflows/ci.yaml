@@ -23,14 +23,14 @@ jobs:
         # We use --syntax-check first to fail fast if YAML is broken
         run: |
           uv tool run --from ansible-core ansible-playbook \
-          local/bootstrap.yaml --syntax-check
+          local/configuration/bootstrap.yaml --syntax-check
 
       - name: Execute Ansible Bootstrap
         # This actually runs the playbook on the GitHub runner.
         # It will clone your weather repo and create the data dirs.
         run: |
           uv tool run --from ansible-core ansible-playbook \
-          -i local/inventory.ini local/bootstrap.yaml
+          -i local/configuration/inventory.ini local/configuration/bootstrap.yaml
         env:
           # If your playbook uses environment variables for paths/keys
           ANSIBLE_FORCE_COLOR: "true"
