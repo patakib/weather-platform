@@ -10,6 +10,7 @@
       - git
       - curl
     state: present
+  become: true
   when: ansible_os_family == "Archlinux"
 
 - name: Install system packages (Debian/Ubuntu)
@@ -22,8 +23,19 @@
       - curl
     state: present
     update_cache: yes
-  become: yes
+  become: true
   when: ansible_os_family == "Debian"
+
+- name: Install system packages (Red Hat)
+  dnf:
+    name:
+      - python3
+      - git
+      - curl
+    state: present
+    update_cache: yes
+  become: true
+  when: ansible_os_family == "RedHat"
 
 ##################################################
 # Install uv (Python package manager)

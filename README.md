@@ -18,16 +18,9 @@ That repo contains all the logic for the actual application.
 ```configuration``` folder includes all necessary files for Ansible that are needed to bootstrap a (Linux) server with the Weather Python project.
 
 ```cd local```
-```ansible-playbook -i inventory.yml bootstrap.yml```
+```ansible-playbook -i inventory.yml bootstrap.yml -K```
+Then it asks for sudo password (this is the -K option).
 
 It should clone the app, create the necessary folders for data and install the Python environment in ```{YOUR_HOME_FOLDER}/weather-app```.
 
 
-```
-```
-```
-```
-```
-```
-```
-```
